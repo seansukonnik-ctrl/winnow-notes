@@ -1,6 +1,6 @@
 # Title style
 
-How Winnow names notes. Applies to every candidate in `00-Inbox/AI Extracted Notes/` and every note promoted to `02-Permanent/`. If the vault has its own `05-Meta/System/title-style.md`, that copy wins: it is the user's edited version of this one.
+How Winnow names notes. Applies to every candidate in `$WN_CANDIDATES/` and every note promoted to `$WN_PERMANENT/`. If the vault has its own `$WN_SYSTEM/title-style.md`, that copy wins: it is the user's edited version of this one.
 
 ## The one rule
 
@@ -67,5 +67,5 @@ Only when the user asks. Then:
 - rename the file and the `# ` heading;
 - put the old title in `aliases:` in frontmatter and in `renamed_from:`, so old wording still finds it in Obsidian's quick switcher and search;
 - add the old title as the `> ` claim line if the note doesn't already open with one;
-- repoint every `[[Old title]]`, `[[Old title|...]]` and `[[Old title#...]]` in the vault to the new name, plus titles and paths in `05-Meta/Technicals/galaxy-map.json`;
+- repoint every `[[Old title]]`, `[[Old title|...]]` and `[[Old title#...]]` in the vault to the new name;
 - rebuild the search index afterwards (notes are indexed by path).

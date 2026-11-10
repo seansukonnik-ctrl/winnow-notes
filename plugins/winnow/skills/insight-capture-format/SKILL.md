@@ -6,7 +6,7 @@ user-invocable: false
 
 # Candidate contract
 
-Every candidate note in the vault is written one way, by every skill. Four skills write candidates (`extract-insights`, the `insight-extractor` agent, `extract-document-insights`, `deep-research`); this file is the only place the shape, the duplicate check and the verification are defined. If a skill's own text disagrees with this file, this file wins.
+Every candidate note in the vault is written one way, by every skill. Two write candidates (`extract-insights` and the `insight-extractor` agent); this file is the only place the shape, the duplicate check and the verification are defined. If a skill's own text disagrees with this file, this file wins.
 
 Candidates go to `$WN_CANDIDATES/` and wait for the owner's decision in the Selection queue or `/graduate-insights`. They are never written to `$WN_PERMANENT/` directly.
 

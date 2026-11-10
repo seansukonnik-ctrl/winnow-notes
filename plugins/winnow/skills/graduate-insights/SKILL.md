@@ -1,6 +1,6 @@
 ---
 name: graduate-insights
-description: Review candidate notes and promote worthy ones to permanent status using Zettelkasten principles. Checks whether the graduation moves any Terrain, verifies its own arithmetic, and never reports success on a mismatch.
+description: Review candidate notes and promote worthy ones to permanent status using Zettelkasten principles. Verifies its own arithmetic, and never reports success on a mismatch.
 allowed-tools:
 - Read
 - Write
@@ -22,8 +22,6 @@ Review candidates from the holding area and promote worthy ones to `$WN_PERMANEN
 - **`$WN_CANDIDATES/`** - the live one. Personal insights extracted from conversations and reading.
 - **`$WN_INBOX/`** (excluding the candidates folder itself and `Content Extractions/`) - raw captures.
 
-Research extracts from `/deep-research` and `/extract-document-insights` land in `$WN_CANDIDATES/` too, marked `source_type: document`. They are external claims, not the user's thinking: say so when presenting one, and keep its `epistemic_status` on the promoted note. The old `Document Insights` folder is deprecated; nothing should write there.
-
 Do not hardcode candidate counts into this file. They go stale within a week. Count them at run time.
 
 ## State Dependencies
@@ -34,7 +32,6 @@ Do not hardcode candidate counts into this file. They go stale within a week. Co
 | Q-values | `$WN_ENGINE/data/q_values.json` | Yes | No |
 | Candidates | `$WN_CANDIDATES/` | Yes | Move / stub |
 | Permanent Notes | `$WN_PERMANENT/` | No | Yes |
-| Terrains | `$WN_TERRAINS/` | Yes | Yes (with go-ahead) |
 | Changelog | `$WN_CHANGELOGS/CHANGELOG - Graduation YYYY-MM-DD HHMM.md` | No | Yes |
 
 ---
@@ -206,17 +203,7 @@ Then verify the other end: every note listed as promoted **exists** at its new p
 
 **If anything does not reconcile:** do not write "Complete". Name the specific notes, say the run is incomplete, and append the mismatch to "Red" in `winnow-state.md`.
 
-### Step 7: Terrain check
-
-Graduation is the moment worldview moves, so this is not optional.
-
-Read **all** terrains in `$WN_TERRAINS/`, not just the two whose titles look closest. Match on open `(no note yet - capture candidate)` markers first - those are explicit requests for exactly this kind of material - then on domain overlap.
-
-If something fits: **offer** the update and wait for the go-ahead. Never edit a terrain silently, and never write one on your own inference. Texture is a word (forming / settling / settled / internally-tense / contested), never a number.
-
-If nothing fits, say so plainly rather than forcing a match.
-
-### Step 8: Report and write state
+### Step 7: Report and write state
 
 ```
 ## Graduation - [Complete | INCOMPLETE - counts do not reconcile]
@@ -232,9 +219,6 @@ Originals removed: N deleted / N moved to _to_delete / N stubbed in place
 ### Held
 - [[Note]] - [reason given]  [Nth session held]
 
-### Terrains
-- [Terrain] - offered / updated with go-ahead / checked, no fit
-
 ### Duplicate check
 via dedup (N duplicate, N check, N new) | via search | manual ([reason])
 ```
@@ -243,7 +227,7 @@ Then:
 
 - append one line to **Run log** in `$WN_STATE`:
   `YYYY-MM-DD | graduate-insights | N candidates -> N decided -> N left | [ok | MISMATCH: ...]`
-- update **Live metrics**: candidate count, permanent-note count, terrain count, with today's date
+- update **Live metrics**: candidate count, permanent-note count, with today's date
 - append anything that broke to **Red**, including the stub-fallback count if it fired
 - write a dated changelog at `$WN_CHANGELOGS/CHANGELOG - Graduation YYYY-MM-DD HHMM.md` (dated file, not a running `CHANGELOG.md` - that is the convention the rest of the vault uses)
 

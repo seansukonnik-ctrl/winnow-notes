@@ -17,8 +17,6 @@ WN_ENGINE="$VAULT/Winnow/search"; [ -d "$WN_ENGINE" ] || WN_ENGINE="$VAULT/resou
 eval "$(python3 "$WN_ENGINE/winnow_env.py" "$VAULT")"   # folder names from winnow.json: $WN_PERMANENT, $WN_CANDIDATES, $WN_STATE ...
 VAULT_BASE_PATH="$VAULT"
 SCRIPT="$WN_SEARCH"
-# Newest voice profile, whatever its number: *voice_profile_v*.md anywhere near the top of the vault (e.g. sean_voice_profile_v4.md)
-VOICE=$(find "$VAULT" -maxdepth 3 -name '*voice_profile_v*.md' -not -path '*/Archive/*' 2>/dev/null | sort -V | tail -1)
 ```
 
 ## Workflow
@@ -28,12 +26,7 @@ VOICE=$(find "$VAULT" -maxdepth 3 -name '*voice_profile_v*.md' -not -path '*/Arc
 bash "$SCRIPT" search "$ARGUMENTS" --mode spreading --limit 8 --json
 ```
 
-**Step 2 — Read the voice profile, if there is one:**
-```
-$VOICE
-```
-
-If `$VOICE` resolves to a file (the highest-numbered `*voice_profile_v*.md`), read it and write in that voice. Never hardcode a version number: older versions get archived and a pinned path silently points at nothing. If there is no voice profile yet, write plainly and keep the user's own phrasing from the notes wherever you quote or paraphrase them; don't invent a style.
+**Step 2 — Keep their voice:** write plainly and keep the user's own phrasing from the notes wherever you quote or paraphrase them; don't invent a style.
 
 **Step 3 — Read top 3-5 relevant permanent notes in full**
 

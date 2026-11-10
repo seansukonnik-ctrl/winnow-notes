@@ -17,7 +17,7 @@ user-invocable: true
 
 Turns an ordinary Obsidian vault into one this system can work in, and calibrates it to the person who owns it. The interview is the product's first impression and its calibration at once: keep it short, specific and about them.
 
-The system has two halves that talk only through files in the vault: the Obsidian plugin **Winnow** (the human side: Selection queue, Vault state, maps) and this Claude plugin (the agent side: extraction, graduation, search, terrains). This skill wires both into the vault.
+The system has two halves that talk only through files in the vault: the Obsidian plugin **Winnow** (the human side: Selection queue, Vault state) and this Claude plugin (the agent side: extraction, graduation, search). This skill wires both into the vault.
 
 ## Ground rules
 
@@ -55,7 +55,6 @@ The default layout of a new vault, which this skill creates (the user sees four 
 Inbox/               where they write; Claude reads new notes from here
 Inbox/Candidates/    what Claude proposes; decided in the Selection queue
 Permanent Notes/     what they kept
-Terrains/            their living stances on broad areas (only once there is one)
 Winnow/              state file, owner profile, templates, changelogs, the search engine (Winnow/search) and the kit
 ```
 
@@ -81,17 +80,16 @@ Tell the user in two or three sentences what you see ("about 600 notes, most in 
 
 ## Step 2: The interview
 
-Aim: learn enough to (a) tell their thinking from what they imported, (b) know which folders feed the system, (c) seed the first terrain. Ask in this order, skipping anything Step 1 already answered.
+Aim: learn enough to (a) tell their thinking from what they imported, (b) know which folders feed the system. Ask in this order, skipping anything Step 1 already answered.
 
 1. **Name and language.** What to call them; which language(s) they write notes in.
 2. **What they do and read.** Their work in a sentence; what they read most (sources, formats); how material gets into the vault (Readwise, copy-paste, typing notes while reading, dictation).
-3. **What they want back.** AskUserQuestion, multi-select: remember and retrieve what I've read and thought / see connections I missed / know what I actually think about a topic / turn notes into drafts / keep a map of my views. This tells you what to demonstrate in Step 5.
+3. **What they want back.** AskUserQuestion, multi-select: remember and retrieve what I've read and thought / see connections I missed / know what I actually think about a topic. This tells you what to demonstrate in Step 5.
 4. **Where their own thinking lives.** Show the folder list from Step 1 and ask which folders hold *their* notes (reactions, arguments, ideas) as opposed to imported highlights or reference material. Those become intake folders. Imported-only folders (Readwise, clippings) are not intake by default: the extractor only keeps what the user said about a source, and a raw highlight has nothing of theirs in it yet. **But if they write their own reactions inside an imported folder** (a Readwise `Note:` under a highlight, comments in a clipping), that folder *is* intake - list it, and record the marker in the owner profile. Listing a folder as intake also makes it searchable (the search engine's default exclusions, such as `Readwise`, never apply to an intake folder).
    Then ask the reverse: which folders should search *ignore* - raw clippings, templates, anything that is never theirs and would crowd their own notes out of results. These go to `index_exclude`.
 5. **The backlog.** How much of the existing material should go through extraction now: a sample of the most recent notes (default: 15), a named folder or topic, or none. Everything older than today is otherwise left alone; new and edited notes flow in from now on.
    **Offer promote-directly when it fits.** If Step 1 showed notes that are already atomic - one claim, in their own words, a title that is a point (a `Thinking/` folder of short argued notes is the typical case) - extracting them would only produce candidates that restate each note. Offer instead to promote them straight to `$WN_PERMANENT/`. Build the list yourself (at most 30 at a time, most recent first) and show it: file name, the one-line claim you read in it, and a house-style title suggestion where theirs breaks the style. They can take all, some, or none. Notes that make two points, or mix their thinking with quoted text, stay out of this list and go through extraction instead.
 6. **Reading.** If Step 1 or question 2 showed Readwise (a `Readwise/` folder, or they said they highlight in Readwise/Kindle), confirm the folder it syncs into. That switches on the **reading** module: their reactions under highlights can be intake (question 4), and `/recommend-reading` matches what they saved but haven't read against open questions in their notes. No Readwise: leave the module off and say it can be switched on later.
-7. **A coarse take.** "Pick a broad area you have a strong, maybe crude, opinion on - crypto, remote work, AI agents, anything. What's your one-line take?" Then two or three follow-ups to pull out the finer sub-takes, especially the ones that contradict the one-liner. This becomes their first Terrain in Step 4. If they'd rather not, skip it (the terrains module stays on; the folder is created with the first terrain).
 
 Keep their own words. The owner profile quotes them rather than paraphrasing.
 
@@ -100,14 +98,12 @@ Keep their own words. The owner profile quotes them rather than paraphrasing.
 List every file and folder to be created, and the one existing file to be changed:
 
 ```
-Folders:   Inbox/  Inbox/Candidates/  Permanent Notes/  Terrains/ (only with a first terrain)
+Folders:   Inbox/  Inbox/Candidates/  Permanent Notes/
            Winnow/Templates/  Winnow/Changelogs/
 Files:     winnow.json
            CLAUDE.md                          (new | section appended to your existing one)
            $WN_OWNER_PROFILE
            $WN_STATE
-           $WN_TEMPLATES/Terrain Template.md
-           $WN_TERRAINS/<Area>.md              (if they gave a coarse take)
 Changed:   .obsidian/community-plugins.json   (adds "winnow")
 Moved:     <N notes> -> $WN_PERMANENT/         (only if they chose promote-directly; list every file)
 Then:      build the search index, extract from <N notes / folder>
@@ -130,16 +126,15 @@ Use today's date and the model you are running as for all metadata (`created`, `
      "intake": ["<folders from question 4, vault-relative, forward slashes>"],
      "intake_since": "<today>",
      "index_exclude": ["<folder names search should skip, from question 4; [] if none>"],
-     "voice_profile": null,
-     "modules": ["terrains", "reading"],
+     "modules": ["reading"],
      "folders": {
        "inbox": "Inbox", "candidates": "Inbox/Candidates", "permanent": "Permanent Notes",
-       "terrains": "Terrains", "system": "Winnow", "engine": "Winnow/search",
+       "system": "Winnow", "engine": "Winnow/search",
        "readwise": "<their Readwise folder, only with the reading module>"
      }
    }
    ```
-   `modules`: `terrains` always; `reading` only if question 6 found Readwise - otherwise `["terrains"]`. Other modules (maps, writing, research) exist but stay off for now; don't offer them. `folders` is written out in full so the layout is visible in one place; anything left out falls back to the defaults above. Re-read the variables after writing it: `eval "$(python3 "$VAULT/Winnow/search/winnow_env.py" "$VAULT")"`.
+   `modules`: `reading` only if question 6 found Readwise - otherwise `[]`. `folders` is written out in full so the layout is visible in one place; anything left out falls back to the defaults above. Re-read the variables after writing it: `eval "$(python3 "$VAULT/Winnow/search/winnow_env.py" "$VAULT")"`.
    `intake_since` is what keeps the pre-setup backlog out of routine runs. `index_exclude` and `intake` are read by the search engine at every index build: intake folders are always indexed, `index_exclude` folders never are. `/process-new-notes` always reads `$WN_INBOX/` as well; it does not need to be listed.
 3. **`CLAUDE.md`:** fill `Winnow/kit/CLAUDE.template.md` (replace `{{OWNER}}`, `{{SETUP_DATE}}` and `{{INTAKE_FOLDERS}}`). If the vault already has a `CLAUDE.md`, append the filled template under a `## Knowledge system` heading instead, leaving their text above it untouched.
 4. **`$WN_OWNER_PROFILE`:** from the interview, in this shape. Quote them; don't embellish; nothing they didn't say.
@@ -166,9 +161,7 @@ Use today's date and the model you are running as for all metadata (`created`, `
    <one or two concrete markers from the notes you read in Step 1, e.g. "their comments follow '->' under a highlight", "journal entries are theirs, Reading/ is mostly quotes">
    ```
 5. **State file:** copy `Winnow/kit/state.template.md` to `$WN_STATE` (keep that exact path: the Vault state panel reads it) and fill the date.
-6. **Terrain template:** copy `Winnow/kit/Terrain Template.md` to `$WN_TEMPLATES/Terrain Template.md`.
-7. **First terrain** (if they gave a coarse take): `mkdir -p "$WN_TERRAINS"`, then write `$WN_TERRAINS/<Area>.md` following the `/terrain` skill's CREATE workflow, from what they said in the interview. With an empty vault there are no notes to link yet: mark every sub-take `(no note yet - capture candidate)`, texture `forming`. Show it to them before writing, as part of the Step 3 go-ahead or right after.
-8. **Switch Winnow on:** add `"winnow"` to the JSON array in `.obsidian/community-plugins.json` (create the file with `["winnow"]` if it doesn't exist). Edit with a short python read-modify-write, keeping every entry already there.
+6. **Switch Winnow on:** add `"winnow"` to the JSON array in `.obsidian/community-plugins.json` (create the file with `["winnow"]` if it doesn't exist). Edit with a short python read-modify-write, keeping every entry already there.
 
 ## Step 5: Build the index and run a first pass
 

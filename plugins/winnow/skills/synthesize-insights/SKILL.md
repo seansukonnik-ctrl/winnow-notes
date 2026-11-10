@@ -42,7 +42,7 @@ Look for:
 - Note what questions it raises
 
 **Step 4 — Output options:**
-- Article outline (for create-article follow-up)
+- Article outline
 - Framework description with named concept
 - MOC draft (for create-moc follow-up)
 - Standalone synthesis note saved to `$WN_CANDIDATES/` (with the CLAUDE.md frontmatter), so `/graduate-insights` reviews it

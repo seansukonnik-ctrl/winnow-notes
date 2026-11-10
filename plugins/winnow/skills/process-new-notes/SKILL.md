@@ -143,20 +143,6 @@ The index builds anywhere Python runs (ONNX path, see `/refresh-index`). Run `ba
 
 If the indexer fails, log a warning and continue - move and extraction proceed without a fresh index. **Record the outcome either way**, it goes into state in Step 7.
 
-### Step 3b: Worth Sending (only if `friends` is in `$WN_MODULES`)
-
-Only after a successful rebuild (a stale index would score the new pieces on old text). Run:
-
-```bash
-bash "$SCRIPT" friends --json
-```
-
-This flags new pieces from Analysed pieces and Essays that touch a friend's interests (no friend profiles = it says so, skip). Then vet every entry with `"status": "flagged"` in `$WN_SYSTEM/friend-matches.json`, including any left from the plugin's own hourly passes, exactly as `${CLAUDE_PLUGIN_ROOT}/skills/friend/SKILL.md` Mode 3 says. Record `flagged N -> vetted N, dropped N` for the report. A failure here never blocks the rest of the run.
-
-### Step 3c: People inbox (only if `friends` is in `$WN_MODULES`)
-
-If `07-Network/Inbox.md` has entries under `## New`, sort them by following `05-Meta/System/people-intake.md` exactly (that file is the single rulebook; the Winnow plugin's "Sort with Claude" button uses the same one). Report one line per entry. Skip silently when `## New` is empty.
-
 ### Step 4: Extract Insight Candidates
 
 Spawn the `insight-extractor` agent that ships with this plugin (listed as `winnow:insight-extractor`) with all discovered file paths:
@@ -230,9 +216,6 @@ N notes added to $WN_CANDIDATES/  (before: X, after: Y)
 
 ### Index
 rebuilt ✓  |  ⚠ rebuild failed - [error]
-
-### Worth sending
-N vetted (friend - piece - why, one line each), N dropped  |  no friend profiles  |  module off
 
 ---
 Next step: review the candidates in the Selection queue in Obsidian (or run /graduate-insights to go through them here)

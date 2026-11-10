@@ -1,4 +1,4 @@
-# Winnow for Claude (tester edition 0.9.3-core)
+# Winnow for Claude (tester edition 0.9.4-core)
 
 The Claude half of Winnow. The other half is the Winnow Obsidian plugin; they talk only through files in your vault.
 
@@ -14,7 +14,6 @@ Start with `/setup-vault`.
 | `find-connections` | Map how a note or topic connects to the rest |
 | `get-perspective-on` | What do I actually think about X, from my own notes |
 | `synthesize-insights` | Combine several notes into one argument or framework |
-| `terrain` | Map or update your living stance on a broad area |
 | `create-moc` | A map of content for a topic |
 | `refresh-index` | Rebuild the local search index |
 | `recommend-reading` | What to read next from your Readwise saves (reading module) |
@@ -26,7 +25,6 @@ Start with `/setup-vault`.
 Inbox/               where you write
 Inbox/Candidates/    what Claude proposes - decide them in the Selection queue
 Permanent Notes/     what you kept
-Terrains/            your living stances (appears with the first one)
 Winnow/              everything technical: settings, state, search engine
 ```
 

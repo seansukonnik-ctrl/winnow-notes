@@ -115,7 +115,6 @@ Deletion blocked is the known device-bridge restriction - if it is blocked, note
 
 - Does `CLAUDE.md` describe a component as working while a check above says otherwise?
 - Does the vault still hold a `.claude/skills/` copy of a skill that this plugin also ships (two copies that can disagree)?
-- If there are several voice profiles (`*voice_profile_v*.md`), are the older versions still sitting next to the newest?
 
 Each of these is a trap for whoever reads the docs and believes them, including the agent itself.
 
