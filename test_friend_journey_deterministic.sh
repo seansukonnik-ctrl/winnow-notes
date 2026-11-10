@@ -34,6 +34,16 @@ for d in "Inbox" "Inbox/Candidates" "Permanent Notes" "Winnow/search" "Winnow/re
   [ -d "$VAULT/$d" ] && pass "dir: $d" || fail "dir: $d"
 done
 
+# 2b. Guides, media and the Readwise licence ship in the zip; Start here opens first
+for f in "Guides/Start here.md" "Guides/How Winnow works.md" "Guides/How to write notes for Winnow.md" "Guides/FAQ.md" \
+         "Guides/media/selection-queue.gif" "Guides/media/candidates-appear.gif" \
+         ".obsidian/plugins/readwise-official/LICENSE" ".obsidian/plugins/winnow/main.js"; do
+  [ -f "$VAULT/$f" ] && pass "file: $f" || fail "file: $f"
+done
+grep -q '"Guides/Start here.md"' "$VAULT/.obsidian/workspace.json" && pass "workspace opens Start here" || fail "workspace opens Start here"
+if grep -q -E "Sean|seanp|Synced_PKM|02-Permanent|05-Meta|Pasha|Methink" "$VAULT/.obsidian/plugins/winnow/main.js"; then
+  fail "winnow main.js has personal strings"; else pass "winnow main.js privacy grep"; fi
+
 # 3. winnow.json valid JSON with required fields
 python3 - "$VAULT/winnow.json" <<'PY'
 import json, sys
@@ -113,10 +123,9 @@ if $INDEX_BUILT; then
   if [ "$SEARCH_EC" -ne 0 ] || [ -z "$SEARCH" ]; then
     fail "search failed (exit $SEARCH_EC, empty output)"
   else
-    echo "$SEARCH" > "/tmp/winnow-test-search-$$.json"
-    python3 -c "import json; j=json.load(open('/tmp/winnow-test-search-$$.json')); assert isinstance(j,(list,dict))" \
+    # stdin, not a /tmp file: Windows Python can't see Git Bash's /tmp
+    printf '%s' "$SEARCH" | python3 -c "import json,sys; j=json.load(sys.stdin); assert isinstance(j,(list,dict))" \
       && pass "search returns JSON" || fail "search output not valid JSON"
-    rm -f "/tmp/winnow-test-search-$$.json"
   fi
 else
   pass "search skipped: no deps available (ok in WSL/no-pip env)"
@@ -170,10 +179,8 @@ if $INDEX_BUILT; then
   DEDUP_EC=$?
   set -e
   if [ "$DEDUP_EC" -eq 0 ] && [ -n "$DEDUP" ]; then
-    echo "$DEDUP" > "/tmp/winnow-test-dedup-$$.json"
-    python3 -c "import json; j=json.load(open('/tmp/winnow-test-dedup-$$.json')); assert isinstance(j,(list,dict))" \
+    printf '%s' "$DEDUP" | python3 -c "import json,sys; j=json.load(sys.stdin); assert isinstance(j,(list,dict))" \
       && pass "dedup returns JSON" || fail "dedup output not valid JSON"
-    rm -f "/tmp/winnow-test-dedup-$$.json"
   else
     fail "dedup failed (exit $DEDUP_EC)"
   fi

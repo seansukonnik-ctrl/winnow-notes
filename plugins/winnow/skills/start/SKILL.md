@@ -52,9 +52,20 @@ Do not explain the system before asking. Start with the first question.
    - Remember and retrieve what I've read and thought
    - See connections I'd otherwise miss
    - Know what I actually think about a topic
-4. **Readwise.** "Do you use Readwise? It's a service that collects your highlights and saves them. If yes, the Readwise plugin in Obsidian (already installed in your vault) pulls them in automatically - you just need to sign in once." AskUserQuestion: Yes, I'll sign in now / No / I'll set it up later.
+4. **Readwise (required).** Do not ask whether they use it. Say plainly, in your own words:
+   - Winnow needs Readwise. It is where your reading comes in (highlights, and the articles you save), and the reading side of Winnow is built on it.
+   - It is paid after a 30-day free trial: https://readwise.io/pricing. Message Sean for his invite link before signing up - it gives you both an extra free month.
+   - The Readwise plugin is already installed in this vault; you only sign in once.
 
-If they choose "Yes, I'll sign in now": tell them to open Obsidian -> Community plugins -> Readwise Official -> Options -> and sign in with their Readwise account. Wait for them to confirm before continuing.
+   Then walk them through it, one step at a time:
+   1. Start the trial at https://readwise.io (or with Sean's invite link) if they have no account yet.
+   2. In Obsidian: Settings (gear, bottom left) -> Community plugins -> Readwise Official -> Options (gear icon).
+   3. Click **Connect** and sign in to Readwise in the browser window that opens. Back in Obsidian it should say connected.
+   4. Leave the plugin's base folder as `Readwise` (Winnow reads from there) and click **Initiate Sync**.
+
+   AskUserQuestion: "Connected" / "I need a minute" / "I don't want Readwise". On "I need a minute", wait and ask again; do not move on until they answer "Connected" or refuse.
+
+   Only if they refuse: carry on without it (`modules: []` in Step 4) and tell them once that the reading side (highlights, `/recommend-reading`) stays off until they connect Readwise; they can sign in later and say "turn reading on" to have it switched back on.
 
 ## Step 2: Topic interview (10 minutes, conversational)
 
@@ -98,7 +109,7 @@ Update `winnow.json` with these fields (merge, do not replace):
   "languages": ["<as they said, default: English>"],
   "intake": ["Inbox"],
   "intake_since": "<today>",
-  "index_exclude": [],
+  "index_exclude": ["Guides"],
   "modules": ["reading"],
   "folders": {
     "inbox": "Inbox",
@@ -112,7 +123,7 @@ Update `winnow.json` with these fields (merge, do not replace):
 }
 ```
 
-If they said no Readwise: set `"modules": []` and omit `"readwise"` from folders.
+Keep `"reading"` in modules whenever they connected Readwise. Only if they refused it: set `"modules": []` and omit `"readwise"` from folders.
 
 Re-read the env after writing: `eval "$(python3 "$WN_ENGINE/winnow_env.py" "$VAULT")"`.
 
@@ -146,7 +157,7 @@ Count candidates in `$WN_CANDIDATES/` before and after.
 Tell them briefly:
 
 - How many candidates are waiting (use the before/after count, not the agent's claim).
-- **In Obsidian:** open the **Selection queue** (inbox icon, left ribbon). Each card is a candidate insight extracted from your interview. Promote the ones that feel right, skip or hold the rest. That is the whole decision - nothing happens without you choosing.
+- **In Obsidian:** open the **Selection queue** (the Winnow wheat-ear icon in the left ribbon). Each card is a candidate insight extracted from your interview. Promote the ones that feel right, skip or hold the rest. That is the whole decision - nothing happens without you choosing.
 - **After deciding:** come back to this task and run `/graduate-insights` to move your choices into Permanent Notes.
 - **To add more:** write in Inbox/ anytime - a reaction to something you read, a half-formed thought, whatever. When you have a few, run `/process-new-notes`.
 - **To ask your vault:** once you have permanent notes, try `/get-perspective-on <topic>` or `/recall <keyword>`.
