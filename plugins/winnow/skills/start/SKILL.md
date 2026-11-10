@@ -56,6 +56,7 @@ Do not explain the system before asking. Start with the first question.
    - Winnow needs Readwise. It is where your reading comes in (highlights, and the articles you save), and the reading side of Winnow is built on it.
    - It is paid after a 30-day free trial: https://readwise.io/pricing. Message Sean for his invite link before signing up - it gives you both an extra free month.
    - The Readwise plugin is already installed in this vault; you only sign in once.
+   - If they want more help than the steps below: https://winnow-notes.vercel.app/readwise.html has a step-by-step guide with screenshots and short videos.
 
    Then walk them through it, one step at a time:
    1. Start the trial at https://readwise.io (or with Sean's invite link) if they have no account yet.

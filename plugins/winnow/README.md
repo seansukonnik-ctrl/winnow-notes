@@ -1,4 +1,4 @@
-# Winnow for Claude (friends edition 0.9.6-core)
+# Winnow for Claude (friends edition 0.9.7-core)
 
 The Claude half of Winnow. The other half is the Winnow Obsidian plugin; they talk only through files in your vault.
 
