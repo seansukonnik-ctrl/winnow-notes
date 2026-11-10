@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="description" content="Setting up Readwise for Winnow Notes: the account, your reading sources, and the Obsidian connection.">
+<title>Readwise setup - Winnow Notes</title>
+<link rel="icon" href="assets/winnow-mark-B1-gold-tile.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <img class="logo" src="assets/winnow-mark-B1-gold-tile.svg" alt="" width="30" height="30">
+    <a href="index.html" class="wordmark">Winnow Notes</a>
+    <nav class="nav-links" aria-label="Page">
+      <a href="#account">Account</a>
+      <a href="#sources">Your reading</a>
+      <a href="#obsidian">Obsidian</a>
+      <a href="#more">Videos and docs</a>
+      <a href="index.html#download" class="btn">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap guide-head">
+    <a class="back" href="index.html">&larr; Back to Winnow Notes</a>
+    <p class="eyebrow">Guide - Readwise</p>
+    <h1>Getting your reading into the vault</h1>
+    <p class="sub">Readwise collects everything you highlight, from Kindle, articles, PDFs, newsletters and even paper books, and the Readwise plugin in Obsidian writes all of it into a <code>Readwise/</code> folder in your vault. That folder is where Winnow picks it up. Setting it up is three things: an account, your reading sources, and one Connect button in Obsidian. Maybe fifteen minutes, most of it waiting for Kindle to sync.</p>
+  </div>
+
+  <section id="account">
+    <div class="wrap">
+      <p class="label">1 - Account</p>
+      <h2>Get the invite link first</h2>
+      <div class="prose">
+        <p>Message Sean for his invite link before you sign up. It gives you both an extra free month on top of the normal 30-day trial, and it only works if you use it when creating the account.</p>
+        <p>After the trial it's $5.59 to $9.99 a month on yearly billing depending on the plan, or $12.99 for the full plan billed monthly (<a href="https://readwise.io/pricing" target="_blank" rel="noopener">readwise.io/pricing</a>). Yearly means one charge a year, which is easy to forget about. Students and people in academia get 50% off, and there are discounts for some countries, if you email Readwise and ask.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="wrap">
+      <p class="label">2 - Your reading</p>
+      <h2>Connect wherever you already read</h2>
+      <p class="prose">Everything here starts from the <a href="https://readwise.io/welcome/sync" target="_blank" rel="noopener">Import page</a> in your Readwise account. Connect the ones you actually use and skip the rest, you can add more any time.</p>
+      <ol class="steps">
+        <li><div><h3>Kindle <span class="where">browser extension</span></h3><p>Pick Kindle on the Import page and install the Readwise extension it offers (Chrome or Firefox on a computer). It reads your highlights from Amazon's notebook page, so check that your books show up at <a href="https://read.amazon.com/notebook" target="_blank" rel="noopener">read.amazon.com/notebook</a> first. Documents you sent to your Kindle yourself don't sync this way; for those, upload the <code>My Clippings.txt</code> file from the Kindle instead (<a href="https://docs.readwise.io/readwise/docs/importing-highlights/kindle" target="_blank" rel="noopener">how</a>).</p></div></li>
+        <li><div><h3>Articles, newsletters, PDFs, YouTube <span class="where">Reader</span></h3><p><a href="https://read.readwise.io" target="_blank" rel="noopener">Reader</a> is Readwise's read-later app and comes with the same account. Save things into it with the browser extension or the share sheet on your phone, forward newsletters to your Reader email address, and highlight as you read. YouTube videos open with a transcript you can highlight too. Everything you highlight in Reader goes to Readwise on its own.</p></div></li>
+        <li><div><h3>Paper books <span class="where">Readwise phone app</span></h3><p>Take a photo of the page in the Readwise app and mark the passage, and it becomes a highlight like any other.</p></div></li>
+        <li><div><h3>Everything else <span class="where">Import page</span></h3><p>Apple Books, Kobo, Instapaper, Pocket and a long list of others are on the same Import page, each with its own one-time connect step (<a href="https://docs.readwise.io/readwise/docs/importing-highlights" target="_blank" rel="noopener">full list</a>).</p></div></li>
+      </ol>
+      <div class="note">
+        <p>The note you type on a highlight comes into the vault together with it, and for Winnow it's the most useful part. A highlight is someone else's sentence; a line saying why it caught you is yours, and that's what Claude can turn into a candidate.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="obsidian">
+    <div class="wrap">
+      <p class="label">3 - Obsidian</p>
+      <h2>One Connect button</h2>
+      <p class="prose">The Readwise Official plugin is already installed and switched on in the starter vault, so there's nothing to download.</p>
+      <ol class="steps">
+        <li><div><h3>Open the plugin settings <span class="where">Obsidian</span></h3><p>Settings (gear, bottom left) - Community plugins - Readwise Official - Options.</p></div></li>
+        <li><div><h3>Connect and sign in <span class="where">browser</span></h3><p>Click Connect. A browser tab opens on Readwise, you sign in and allow access, and it sends you back to Obsidian.</p></div></li>
+        <li><div><h3>Run the first sync <span class="where">Obsidian</span></h3><p>Click Initiate Sync. A <code>Readwise/</code> folder appears in the vault with one note per book or article. The first sync of a big library takes a few minutes.</p></div></li>
+        <li><div><h3>Set it to sync on its own <span class="where">Obsidian</span></h3><p>By default it syncs when Obsidian opens. In the same Options screen you can make it check every 1, 12 or 24 hours instead.</p></div></li>
+      </ol>
+      <div class="note">
+        <p>Two things to leave alone. Don't rename the files in <code>Readwise/</code>, because the plugin will just make a new copy under the old name. And the sync only adds, it never overwrites, so editing a highlight in Readwise later won't change the note that's already in the vault. Kindle, Instapaper and Pocket only sync to Readwise a few times a day, so a highlight from this morning can take a while to show up.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="more">
+    <div class="wrap">
+      <p class="label">Videos and docs</p>
+      <h2>Other people explaining it better</h2>
+      <p class="prose">These are a few years old, so the plugin screens look a bit different now, but the steps haven't really changed.</p>
+      <div class="videos">
+        <a class="video" href="https://www.youtube.com/watch?v=DOYwwdDC9LQ" target="_blank" rel="noopener">
+          <img src="assets/yt-DOYwwdDC9LQ.jpg" width="480" height="270" alt="">
+          <div><h3>How to Export Your Highlights to Obsidian</h3><p>Readwise, the official walkthrough of the plugin</p></div>
+        </a>
+        <a class="video" href="https://www.youtube.com/watch?v=Rw1L5sxlnuU" target="_blank" rel="noopener">
+          <img src="assets/yt-Rw1L5sxlnuU.jpg" width="480" height="270" alt="">
+          <div><h3>How to process notes in Obsidian</h3><p>Nicole van der Hoeven, on what to do with highlights once they arrive</p></div>
+        </a>
+        <a class="video" href="https://www.youtube.com/watch?v=CH84CsBViOs" target="_blank" rel="noopener">
+          <img src="assets/yt-CH84CsBViOs.jpg" width="480" height="270" alt="">
+          <div><h3>How I Capture &amp; Process using Readwise &amp; Obsidian</h3><p>FromSergio, a whole reading setup built around Reader</p></div>
+        </a>
+      </div>
+      <h3 style="margin-top:36px;font-size:1.25rem">Readwise's own docs</h3>
+      <ul class="links">
+        <li><a href="https://docs.readwise.io/readwise/docs/exporting-highlights/obsidian" target="_blank" rel="noopener">How the Obsidian export works</a>, including the formatting options</li>
+        <li><a href="https://docs.readwise.io/readwise/docs/importing-highlights" target="_blank" rel="noopener">Importing highlights</a>, every source they support</li>
+        <li><a href="https://docs.readwise.io/readwise/docs/importing-highlights/kindle" target="_blank" rel="noopener">Kindle in detail</a>, for when a book doesn't show up</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/winnow-mark-mono.svg" alt="" width="24" height="24">
+    <span>Winnow Notes. If something breaks or doesn't make sense, message Sean.</span>
+  </div>
+</footer>
+</body>
+</html>
