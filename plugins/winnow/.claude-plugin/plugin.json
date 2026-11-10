@@ -1,6 +1,6 @@
 {
   "name": "winnow",
-  "version": "0.9.4-core",
+  "version": "0.9.5-core",
   "description": "Winnow: a second brain over your Obsidian vault. Extracts candidate insights from your notes, lets you decide what becomes permanent, finds connections and answers what you think about a topic from your own notes. Works with the Winnow Obsidian plugin. Start with /setup-vault.",
   "author": {
     "name": "Winnow Notes"
