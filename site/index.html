@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="description" content="Winnow Notes - a second brain for your own thinking, built on Obsidian and Claude.">
+<title>Winnow Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1C1B19;
+    --paper: #F6F4EE;
+    --gold: #D9A441;
+    --ochre: #8A5A0F;
+    --chaff-75: rgba(236, 231, 220, 0.75);
+    --chaff-55: rgba(236, 231, 220, 0.55);
+    --chaff-35: rgba(236, 231, 220, 0.35);
+    --max-w: 720px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .wordmark { font-family: 'Newsreader', Georgia, serif; }
+  code, kbd { font-family: 'JetBrains Mono', monospace; font-size: 0.875em; }
+  a { color: var(--ochre); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--ink); }
+
+  /* Nav */
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(28,27,25,0.1);
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 10;
+  }
+  nav .logo { width: 32px; height: 32px; }
+  nav .wordmark { font-size: 1.1rem; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+  nav .nav-links { margin-left: auto; display: flex; gap: 20px; }
+  nav .nav-links a { font-size: 0.875rem; color: var(--ochre); text-decoration: none; }
+  nav .nav-links a:hover { text-decoration: underline; }
+
+  /* Layout */
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  /* Hero */
+  .hero {
+    padding: 72px 24px 60px;
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .hero .sub {
+    font-size: 1.1rem;
+    color: #4a4843;
+    max-width: 540px;
+    margin-bottom: 32px;
+    line-height: 1.65;
+  }
+  .btn {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; color: var(--paper); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    margin-left: 12px;
+  }
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+  /* Sections */
+  section { padding: 56px 24px; max-width: var(--max-w); margin: 0 auto; }
+  section + section { border-top: 1px solid rgba(28,27,25,0.08); }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+  p { margin-bottom: 16px; color: #2a2927; }
+  p:last-child { margin-bottom: 0; }
+
+  /* GIF placeholder */
+  .gif-placeholder {
+    background: #e8e4db;
+    border: 1.5px dashed #bbb5a8;
+    border-radius: 8px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 28px 0;
+    color: #8a857c;
+    font-size: 0.875rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* What you need */
+  .needs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .need-card {
+    background: rgba(28,27,25,0.03);
+    border: 1px solid rgba(28,27,25,0.08);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .need-card .need-name {
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+  .need-card .need-cost {
+    font-size: 0.8rem;
+    color: var(--ochre);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 10px;
+  }
+  .need-card p { font-size: 0.875rem; color: #4a4843; margin: 0; }
+
+  /* Steps */
+  .steps { margin-top: 28px; display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(28,27,25,0.07);
+    align-items: start;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+  .step-content h3 { font-size: 1rem; font-weight: 500; margin-bottom: 6px; }
+  .step-content p { font-size: 0.9rem; color: #4a4843; margin: 0; }
+  .step-content code { background: rgba(28,27,25,0.07); padding: 1px 5px; border-radius: 3px; }
+
+  /* Download */
+  #download {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 10px;
+    padding: 40px;
+    max-width: var(--max-w);
+    margin: 0 auto 56px;
+  }
+  #download h2 { color: var(--gold); }
+  #download p { color: rgba(246,244,238,0.8); }
+  #download .btn {
+    background: var(--gold);
+    color: var(--ink);
+    margin-top: 20px;
+  }
+  #download .btn:hover { opacity: 0.9; }
+  .file-note { font-size: 0.8rem; margin-top: 10px; opacity: 0.6; font-family: 'JetBrains Mono', monospace; }
+
+  /* FAQ */
+  .faq-list { margin-top: 24px; display: flex; flex-direction: column; gap: 0; }
+  .faq-item {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(28,27,25,0.07);
+  }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-q { font-weight: 500; margin-bottom: 8px; font-size: 0.95rem; }
+  .faq-a { font-size: 0.9rem; color: #4a4843; }
+  .faq-a p { margin-bottom: 8px; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid rgba(28,27,25,0.1);
+    padding: 32px 24px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #6a6560;
+  }
+  footer a { color: var(--ochre); }
+
+  /* Readwise trial note */
+  .trial-note {
+    background: rgba(217,164,65,0.1);
+    border-left: 3px solid var(--gold);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.875rem;
+    margin-top: 16px;
+    color: #4a4843;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.75rem; }
+    .btn-secondary { margin-left: 0; margin-top: 10px; }
+    nav .nav-links { display: none; }
+    #download { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <img class="logo" src="assets/winnow-mark-B1-gold-tile.svg" alt="Winnow Notes mark">
+  <a href="/" class="wordmark">Winnow Notes</a>
+  <div class="nav-links">
+    <a href="#what-it-does">What it does</a>
+    <a href="#setup">Setup</a>
+    <a href="#download">Download</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Your notes, working for you</h1>
+    <p class="sub">Winnow extracts the actual ideas from what you write and read, turns them into permanent notes, and lets you ask what you actually think about something - in your own words, from your own notes.</p>
+    <a href="#download" class="btn">Download starter vault</a>
+    <a href="#setup" class="btn btn-secondary">See how it works</a>
+  </div>
+
+  <!-- What it does -->
+  <section id="what-it-does">
+    <div class="section-label">The idea</div>
+    <h2>The machine proposes. You decide.</h2>
+    <p>Most note-taking apps are storage. Winnow is different: you write what you think, and Claude reads it, pulls out the atomic claims, and puts them in a queue for you to decide on. Promote the ones that feel right. Skip the rest. What you keep becomes permanent - indexed, searchable, and connected to everything else you've kept.</p>
+    <p>After a few weeks of this, you can ask it "what do I actually think about X" and get an answer assembled from your own notes. Not a summary of what you read - what you thought about it.</p>
+
+    <div class="gif-placeholder">
+      [GIF: Selection queue - promote, hold, merge]<br>
+      <span style="font-family: inherit; font-size: 0.75rem; margin-top: 6px; display: block;">coming in the next update</span>
+    </div>
+
+    <p>The daily loop is short: write something in Inbox, run <code>/process-new-notes</code> in Claude when you have a few, go through the queue in Obsidian, run <code>/graduate-insights</code> to move your decisions into Permanent Notes. That's it.</p>
+  </section>
+
+  <!-- What you need -->
+  <section id="requirements">
+    <div class="section-label">What you need</div>
+    <h2>Three things</h2>
+    <p>Winnow sits on top of three tools. Two are free or already paid for; one costs money.</p>
+
+    <div class="needs-grid">
+      <div class="need-card">
+        <div class="need-name">Claude (Cowork)</div>
+        <div class="need-cost">~$20/month</div>
+        <p>The brains. You need a paid Claude plan. The plugin runs inside Cowork tasks.</p>
+      </div>
+      <div class="need-card">
+        <div class="need-name">Obsidian</div>
+        <div class="need-cost">Free</div>
+        <p>Where your notes live. The Winnow plugin runs here - Selection queue, Vault state. Free for personal use.</p>
+      </div>
+      <div class="need-card">
+        <div class="need-name">Readwise</div>
+        <div class="need-cost">~$8/month after trial</div>
+        <p>Pulls your highlights and reading into the vault automatically. Required - without it, the reading side doesn't work.</p>
+      </div>
+    </div>
+
+    <div class="trial-note">
+      <strong>Readwise trial:</strong> both the free trial and a referral link give both people an extra free month. I'll include mine when I send you the link. After the trial it's around $8/month. If that's a barrier, email them - they give student and country discounts.
+    </div>
+  </section>
+
+  <!-- Setup -->
+  <section id="setup">
+    <div class="section-label">Getting started</div>
+    <h2>Four steps, about 20 minutes total</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Install Obsidian</h3>
+          <p>Download and install <a href="https://obsidian.md" target="_blank" rel="noopener">Obsidian</a> (free). You just need the app - no account required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Download and open the starter vault</h3>
+          <p>Download the zip below. Unzip it somewhere you'll keep it. Open Obsidian, choose "Open folder as vault", and select the unzipped folder. Obsidian will ask you to trust plugins once - say yes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Add Winnow to Claude</h3>
+          <p>In Claude: Customize - Plugins - Add marketplace - paste <code>[your-github-username]/winnow-release</code> - Install Winnow. This adds the Claude-side skills.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Run <code>/start</code></h3>
+          <p>Open a new Cowork task in Claude. Click "Add folder" and add your vault folder. Type <code>/start</code>. Claude will ask you a few questions and walk through the rest - takes about 10 minutes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <div id="download" class="container" style="padding: 0 24px;">
+    <div style="background: var(--ink); color: var(--paper); border-radius: 10px; padding: 40px; margin-bottom: 56px;">
+      <div class="section-label" style="color: var(--gold);">Download</div>
+      <h2 style="color: var(--gold); margin-bottom: 12px;">Starter vault</h2>
+      <p style="color: rgba(246,244,238,0.8);">Everything in one zip. The vault structure, Obsidian plugins (Winnow and Readwise), and the search engine with the semantic model. No downloads on first run.</p>
+      <a href="https://github.com/[TBD]/releases/latest/download/winnow-starter-vault.zip" class="btn" style="background: var(--gold); color: var(--ink); display: inline-block; margin-top: 20px;">Download winnow-starter-vault.zip</a>
+      <p class="file-note">~80 MB zip</p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-label">Common questions</div>
+    <h2>FAQ</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">What should I actually write?</div>
+        <div class="faq-a">
+          <p>Reactions to things you've read ("this contradicts what I thought about X"), half-formed arguments, things that keep coming back to you. Not summaries - your actual take. If you're summarising what someone else said, that's not yours yet. Write what you think about it.</p>
+          <p>Notes can be a sentence or a paragraph. Shorter is usually better.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What can Claude see?</div>
+        <div class="faq-a">
+          <p>Whatever is in the vault folder you added to the Cowork task. Claude reads and writes files in that folder. It doesn't see anything else on your machine. When you run a skill, it only reads the files it needs for that run.</p>
+          <p>Your permanent notes and candidates are plain Markdown files - you can read them, move them, delete them, back them up. No lock-in.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How often should I run <code>/process-new-notes</code>?</div>
+        <div class="faq-a">
+          <p>When you have a few new notes worth processing - maybe every few days, maybe once a week. There's no "right" cadence. The queue doesn't expire and old notes don't go stale. Run it when it feels like there's something worth looking at.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What do "hold" and "merge" mean in the queue?</div>
+        <div class="faq-a">
+          <p><strong>Hold</strong> means you're not ready to decide yet. The candidate stays in the queue until you come back to it.</p>
+          <p><strong>Merge</strong> means this candidate says the same thing as an existing note, or should become part of it. You pick which note to merge into, and <code>/graduate-insights</code> does the combining.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What does it cost?</div>
+        <div class="faq-a">
+          <p>Claude paid plan (~$20/month if you don't have one), Obsidian (free), Readwise (~$8/month after the free trial). The starter vault is a free download. There's no Winnow subscription.</p>
+          <p>Readwise is the one that costs money. The trial is 30 days; a referral link adds another month free for both people. If the price is a problem after the trial, email them - they give student and country discounts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Winnow Notes - message <a href="mailto:[placeholder]">[name placeholder]</a> if anything breaks or if you want to tell me what you think</p>
+</footer>
+
+</body>
+</html>
